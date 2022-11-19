@@ -1,0 +1,28 @@
+{
+  "name": "ecom-apis",
+  "version": "1.0.0",
+  "description": "A REST APIs for an e-commerce marketplace.",
+  "main": "index.js",
+  "repository": "git@github.com:aman2457/ecom-apis.git",
+  "author": "Aman Kumar <amanverma2457@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "exports": "./dist/index.js",
+  "dependencies": {
+    "@types/express": "^4.17.14",
+    "@types/node": "^18.11.9",
+    "express": "^4.18.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.3"
+  },
+  "scripts": {
+    "start:prod": "tsc --project ./ && node dist/index.js",
+    "start": "ts-node src/index.ts",
+    "watch": "nodemon --watch './**/*.ts' --exec 'node --experimental-specifier-resolution=node --loader ts-node/esm' src/index.ts",
+    "dev": "tsc-watch --onSuccess \"npm run watch\""
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20",
+    "tsc-watch": "^5.0.3"
+  }
+}
