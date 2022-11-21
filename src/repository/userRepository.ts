@@ -1,6 +1,5 @@
 import { getConnectedClient } from "../datasource/dbConnect";
 import { User, UserLoginRequest } from "../models/user.dto";
-import { throwError } from "../utils/utils";
 
 export class userRepository{
     constructor(){}
