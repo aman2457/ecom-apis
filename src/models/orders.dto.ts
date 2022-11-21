@@ -1,4 +1,4 @@
-import { Product } from "./catalog.dto"
+import { ProductRequest } from "./catalog.dto"
 
 export interface Order<T>{
     id: string,
@@ -7,4 +7,8 @@ export interface Order<T>{
     buyerId: string,
     createAt: string,
     amount: number
+}
+
+export interface CreateOrderRequest{
+    productIds: string[]
 }

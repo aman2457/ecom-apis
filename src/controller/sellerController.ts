@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import HttpStatus from "http-status-codes";
 import { CreateCatalogRequest } from "../models/catalog.dto";
-import { Order } from "../models/orders.dto";
 import { DefaultMessage } from "../models/user.dto";
 import { sellerService } from "../service/sellerService";
 

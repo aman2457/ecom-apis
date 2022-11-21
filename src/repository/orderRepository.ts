@@ -1,7 +1,6 @@
-import { it } from "node:test";
 import { getConnectedClient } from "../datasource/dbConnect";
 import { ProductResponse } from "../models/catalog.dto";
-import { Order } from "../models/orders.dto";
+import { CreateOrderRequest, Order } from "../models/orders.dto";
 
 export class orderRepository{
     constructor(){}
@@ -40,5 +39,24 @@ export class orderRepository{
             throw error    
         }
         return orders
-    }     
+    }
+    
+    async createOrder(productIds: string[], sellerId: string, buyerId: string, amount: number) {
+        try {
+            const result = (await this.dbClient).query(
+                `insert into orders(product_ids, seller_id, buyer_id, amount) 
+                values(
+                    $1::uuid[], 
+                    $2, 
+                    $3,
+                    $4 
+                    )`,
+                [productIds, sellerId, buyerId, amount]
+            )
+            return result
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
 }

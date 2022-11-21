@@ -1,5 +1,5 @@
 import { Request } from "express"
-import { CreateCatalogRequest, Product, ProductResponse } from "../models/catalog.dto"
+import { CreateCatalogRequest, ProductRequest, ProductResponse } from "../models/catalog.dto"
 import { Order } from "../models/orders.dto"
 import { orderRepository } from "../repository/orderRepository"
 import { productRepository } from "../repository/productRepository"
@@ -19,7 +19,7 @@ export class sellerService{
         return 'Product added successfully..'
     }
 
-    async getorders(req: Request): Promise<Array<Order<Product>>> {
+    async getorders(req: Request): Promise<Array<Order<ProductRequest>>> {
         return await this.orderRepositoryObject.getOrderBySellerId(this.sellerId)
     }
 
