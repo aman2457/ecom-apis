@@ -1,13 +1,8 @@
-CREATE TABLE sellers (
+CREATE TABLE users (
 	id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
-	username text,
-	password text
-);
-
-CREATE TABLE buyers (
-	id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
-	username text,
-	password text
+	username text NOT NULL UNIQUE,
+	password text,
+	user_type text NOT NULL
 );
 
 CREATE TABLE products (
@@ -17,7 +12,7 @@ CREATE TABLE products (
 	seller_id uuid,
 	CONSTRAINT fk_seller
       FOREIGN KEY(seller_id) 
-	  REFERENCES sellers(id)
+	  REFERENCES users(id)
 );
 
 CREATE TABLE orders (
@@ -28,9 +23,9 @@ CREATE TABLE orders (
 	amount money,
 	CONSTRAINT fk_orders_seller
       FOREIGN KEY(seller_id) 
-	  REFERENCES sellers(id),
+	  REFERENCES users(id),
 	buyer_id uuid,
 	CONSTRAINT fk_orders_buyer
       FOREIGN KEY(buyer_id) 
-	  REFERENCES buyers(id)
+	  REFERENCES users(id)
 );
