@@ -1,11 +1,11 @@
 import { getConnectedClient } from "../datasource/dbConnect";
-import { User, UserLoginRequest } from "../models/user.dto";
+import { CreateUserRequest, User, UserLoginRequest } from "../models/user.dto";
 
 export class userRepository{
     constructor(){}
     dbClient = getConnectedClient()
     
-    async createUser(buyer: User): Promise<string>{
+    async createUser(buyer: CreateUserRequest): Promise<string>{
         let id: string = ''
         try {
             const result = await (await this.dbClient).query(
@@ -50,6 +50,7 @@ export class userRepository{
             )
             if (result.rowCount == 1){
                 user = {
+                    userId: result.rows[0].id,
                     username: result.rows[0].username,
                     password: result.rows[0].password,
                     type: result.rows[0].user_type

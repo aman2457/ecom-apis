@@ -1,5 +1,5 @@
 import e, { Request, Response } from "express";
-import { User, UserCreatedResponse, UserLoggedInResponse, UserLoginRequest } from "../models/user.dto";
+import { CreateUserRequest, UserCreatedResponse, UserLoggedInResponse, UserLoginRequest } from "../models/user.dto";
 import { userService } from "../service/userService";
 import HttpStatus from "http-status-codes";
 import { errorNames } from "../utils/erroNames";
@@ -11,15 +11,15 @@ export class userController{
     userServiceObject = new userService() 
 
     async createUser(req: Request, res: Response){
-        const createUserRequest: User = {
+        const createUserRequest: CreateUserRequest = {
             username: req.body.username,
             password: await hashedPassword(req.body.password),
             type: req.body.type
         }
         try {
             const result = (await this.userServiceObject.createUser(createUserRequest))
-            const response: UserCreatedResponse = {
-                id: result || '' 
+            const response: UserLoggedInResponse = {
+                token: result || '' 
             }
             res.status(HttpStatus.CREATED).json(response)      
         } catch (error: any) {
@@ -47,11 +47,15 @@ export class userController{
         } catch (error: any) {
             if (error.name == errorNames.Unauthorized)
             res.status(HttpStatus.UNAUTHORIZED).json({
-                error: 'user not found'
+                error: 'Wrong credentials'
             })
-            if (error.name == errorNames.InvalidRequest)
-            res.status(HttpStatus.UNAUTHORIZED).json({
+            else if (error.name == errorNames.InvalidRequest)
+            res.status(HttpStatus.BAD_REQUEST).json({
                 error: 'Authorization header not found'
+            })
+            else if (error.name == errorNames.NotFound)
+            res.status(HttpStatus.NOT_FOUND).json({
+                error: 'User does not exist'
             })
             else{
                 res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({

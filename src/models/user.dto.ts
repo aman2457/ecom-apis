@@ -1,4 +1,11 @@
+export interface CreateUserRequest{
+    username: string,
+    password: string,
+    type: UserType
+}
+
 export interface User{
+    userId: string,
     username: string,
     password: string,
     type: UserType
@@ -7,6 +14,12 @@ export interface User{
 export enum UserType {
     Buyer = 'buyer',
     Seller = 'seller'
+  }
+
+  export interface UserTokenPayload{
+    userId: string,
+    username: string,
+    type: UserType
   }
 
 export interface UserCreatedResponse{
