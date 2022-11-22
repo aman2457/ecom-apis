@@ -42,21 +42,32 @@ export class orderRepository{
     }
     
     async createOrder(productIds: string[], sellerId: string, buyerId: string, amount: number) {
+        let product: Order<string> | undefined = undefined
         try {
-            const result = (await this.dbClient).query(
+            const result = await (await this.dbClient).query(
                 `insert into orders(product_ids, seller_id, buyer_id, amount) 
                 values(
                     $1::uuid[], 
                     $2, 
                     $3,
                     $4 
-                    )`,
+                    ) returning *`,
                 [productIds, sellerId, buyerId, amount]
             )
-            return result
+            if(result.rowCount == 1){
+                product = {
+                    id: result.rows[0].id,
+                    products: result.rows[0].product_ids,
+                    sellerId: result.rows[0].seller_id,
+                    buyerId: result.rows[0].buyer_id,
+                    createAt: result.rows[0].created_at,
+                    amount: result.rows[0].amount
+                } 
+            }         
         } catch (error) {
             console.log(error)
             throw error
         }
+        return product
     }
 }

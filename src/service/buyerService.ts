@@ -2,6 +2,8 @@ import { CreateOrderRequest } from "../models/orders.dto";
 import { sellerRepository } from "../repository/sellerRepository";
 import { orderRepository } from "../repository/orderRepository";
 import { productRepository } from "../repository/productRepository";
+import { throwError } from "../utils/utils";
+import { errorNames } from "../utils/erroNames";
 
 export class buyerService{
     constructor(){}
@@ -30,6 +32,6 @@ export class buyerService{
             buyerId,
             totalAmount
         )
-        return "Order created."
+        return result ?? throwError(errorNames.InvalidCreate)
     }
 }
