@@ -11,6 +11,7 @@
   "dependencies": {
     "@types/express": "^4.17.14",
     "@types/node": "^18.11.9",
+    "bcrypt": "^5.1.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "http-status-codes": "^2.2.0",
@@ -25,6 +26,7 @@
     "dev": "tsc-watch --onSuccess \"npm run watch\""
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/pg": "^8.6.5",
     "nodemon": "^2.0.20",
     "tsc-watch": "^5.0.3"

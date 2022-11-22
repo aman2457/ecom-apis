@@ -4,22 +4,35 @@ import { userService } from "../service/userService";
 import HttpStatus from "http-status-codes";
 import { errorNames } from "../utils/erroNames";
 import { throwError } from "../utils/utils";
+import { hashedPassword } from "../security/utils";
 
 export class userController{
     constructor(){}
     userServiceObject = new userService() 
 
     async createUser(req: Request, res: Response){
+        const createUserRequest: User = {
+            username: req.body.username,
+            password: await hashedPassword(req.body.password),
+            type: req.body.type
+        }
         try {
-            const result = (await this.userServiceObject.createUser(req.body as User))
+            const result = (await this.userServiceObject.createUser(createUserRequest))
             const response: UserCreatedResponse = {
                 id: result || '' 
             }
             res.status(HttpStatus.CREATED).json(response)      
-        } catch (error) {
-            res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-                error: 'Something bad has happened.'
-            })
+        } catch (error: any) {
+            if(error.name == errorNames.AlreadyExists){
+                res.status(HttpStatus.BAD_REQUEST).json({
+                    error: 'User already exist'
+                })
+            }
+            else{
+                res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+                    error: 'Something bad has happened.'
+                })    
+            }
         }
     }
     

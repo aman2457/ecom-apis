@@ -8,12 +8,13 @@ export class userService{
 
     userRepositoryObject = new userRepository() 
     async createUser(user: User){
-        try {
+        const checkExistingUser = await this.userRepositoryObject.getUser(user.username)
+        if (!checkExistingUser){
             const id = await this.userRepositoryObject.createUser(user)
             return id
-        } catch (error) {
-            console.log(error); 
-            throw error
+        }
+        else{
+            throwError(errorNames.AlreadyExists)
         }
     }
     
