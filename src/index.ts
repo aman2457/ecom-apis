@@ -1,4 +1,5 @@
-import express, { Request, Response } from 'express'
+import express, { Request, Response } from 'express';
+import morgan from 'morgan';
 import { buyerController } from './controller/buyerController';
 import { sellerController } from './controller/sellerController';
 import { userController } from './controller/userController';
@@ -7,6 +8,8 @@ import { AuthenticatedUserRequest } from './models/authorization';
 
 const app = express()
 app.use(express.json());
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
+
 const port = 3000
 
 const userControllerObject = new userController()
