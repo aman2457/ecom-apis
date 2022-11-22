@@ -1,10 +1,9 @@
 import { buyerService } from "../service/buyerService";
 import HttpStatus from "http-status-codes";
-import { Request, Response } from "express";
+import { Response } from "express";
 import { CreateOrderRequest } from "../models/orders.dto";
 import { AuthenticatedUserRequest } from "../models/authorization";
 import { errorNames } from "../utils/erroNames";
-import { DefaultMessage } from "../models/user.dto";
 
 export class buyerController {
     constructor() { }
@@ -32,7 +31,7 @@ export class buyerController {
             res.status(HttpStatus.OK).json(result)
         } catch (error: any) {
             if (error.name == errorNames.InvalidCreate) {
-                res.status(HttpStatus.BAD_REQUEST).json({ error: error.message })
+                res.status(HttpStatus.BAD_REQUEST).json({ error: `Invalid product id's for the given seller id` })
             }
             else {
                 res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({

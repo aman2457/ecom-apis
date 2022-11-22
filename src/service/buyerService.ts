@@ -21,7 +21,10 @@ export class buyerService{
 
     async createOrder(createOrderRequest: CreateOrderRequest, sellerId: string, buyerId: string) {
         let totalAmount = 0
-        const getProductsResult = await this.productRepositoryObject.getProducts(createOrderRequest.productIds)
+        const getProductsResult = await this.productRepositoryObject.getProducts(sellerId, createOrderRequest.productIds)
+        if( getProductsResult.length != createOrderRequest.productIds.length ){
+            throwError(errorNames.InvalidCreate)
+        }
         getProductsResult.forEach( item => {
             return totalAmount = item.price + +totalAmount;
         })

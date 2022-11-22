@@ -28,8 +28,7 @@ export class userService{
         else{
             throwError(errorNames.AlreadyExists)
         }
-    }
-    
+    }    
 
     async loginUser(user: UserLoginRequest) {
         const getUserResult = await this.userRepositoryObject.getUser(user.username)

@@ -22,12 +22,12 @@ export class productRepository{
         return id
     }
 
-    async getProducts(productIds: string[]): Promise<Product[]>{
+    async getProducts(sellerId: string, productIds: string[]): Promise<Product[]>{
         let products: Product[] = []
         try {
             const result = await (await this.dbClient).query(
-                `select id, name, price::numeric, seller_id from products where id=any($1)`,
-                [productIds]
+                `select id, name, price::numeric, seller_id from products where seller_id=$1 and id=any($2)`,
+                [sellerId, productIds]
             )
             if (result.rowCount >= 1){
                 result.rows.map( item => {
