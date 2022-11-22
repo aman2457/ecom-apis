@@ -3,5 +3,6 @@ export const errorNames = {
     AlreadyExists: "AlreadyExists",
     InvalidCreate: "InvalidCreate",
     InvalidRequest: "InvalidRequest",
-    NotFound: "NotFound"
+    NotFound: "NotFound",
+    AccessDenied: "AccessDenied"
   };

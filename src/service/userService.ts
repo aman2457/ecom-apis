@@ -1,4 +1,5 @@
-import { CreateUserRequest, UserLoginRequest, UserTokenPayload } from "../models/user.dto";
+import { buyerPermission, sellerPermission } from "../models/authorization";
+import { CreateUserRequest, UserLoginRequest, UserTokenPayload, UserType } from "../models/user.dto";
 import { userRepository } from "../repository/userRepository";
 import { jsonWebToken } from "../security/jsonWebToken";
 import { verifyPassword } from "../security/utils";
@@ -18,7 +19,8 @@ export class userService{
                 const payload: UserTokenPayload = {
                     userId: id,
                     username: user.username,
-                    userType: user.type
+                    userType: user.type,
+                    permissions: ( user.type == UserType.Buyer) ? buyerPermission.permissions : sellerPermission.permissions 
                 } 
                 return this.jsonWebTokenObject.generateToken(payload)
             }
@@ -37,7 +39,8 @@ export class userService{
                 const payload: UserTokenPayload = {
                     userId: getUserResult.userId,
                     username: getUserResult.username,
-                    userType: getUserResult.type
+                    userType: getUserResult.type,
+                    permissions: ( getUserResult.type == UserType.Buyer) ? buyerPermission.permissions : sellerPermission.permissions 
                 } 
                 return this.jsonWebTokenObject.generateToken(payload)
             }

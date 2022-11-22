@@ -7,20 +7,19 @@ import { productRepository } from "../repository/productRepository"
 export class sellerService{
     orderRepository: any
     constructor(){}
-    readonly sellerId = '48291552-4394-4ed7-b1ea-4fd4028cafba'
-    readonly orderId = '33d3dc8c-be03-41da-a865-4aae0efa6b04'
 
     productRpositoryObject = new productRepository()
     orderRepositoryObject = new orderRepository()
-    async createCatalog(catalogRequest: CreateCatalogRequest){
+    
+    async createCatalog(catalogRequest: CreateCatalogRequest, sellerId: string){
         const result = catalogRequest.catalog.map( async item => {
-            await this.productRpositoryObject.addProduct(item, this.sellerId)
+            await this.productRpositoryObject.addProduct(item, sellerId)
         })     
         return 'Product added successfully..'
     }
 
-    async getorders(req: Request): Promise<Array<Order<ProductRequest>>> {
-        return await this.orderRepositoryObject.getOrderBySellerId(this.sellerId)
+    async getorders(sellerId: string): Promise<Array<Order<ProductRequest>>> {
+        return await this.orderRepositoryObject.getOrderBySellerId(sellerId)
     }
 
 

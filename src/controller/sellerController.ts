@@ -1,5 +1,6 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import HttpStatus from "http-status-codes";
+import { AuthenticatedUserRequest } from "../models/authorization";
 import { CreateCatalogRequest } from "../models/catalog.dto";
 import { DefaultMessage } from "../models/user.dto";
 import { sellerService } from "../service/sellerService";
@@ -7,9 +8,9 @@ import { sellerService } from "../service/sellerService";
 export class sellerController{
     constructor(){}
     sellerServiceObject = new sellerService()
-    async createCatalog(req: Request, res: Response){
+    async createCatalog(req: AuthenticatedUserRequest, res: Response){
         try {
-            const result = await this.sellerServiceObject.createCatalog(req.body as CreateCatalogRequest)
+            const result = await this.sellerServiceObject.createCatalog(req.body as CreateCatalogRequest, req.userId)
             const response: DefaultMessage = {
                 message: result
             }
@@ -22,9 +23,9 @@ export class sellerController{
         }
     }
 
-    async getOrders(req: Request, res: Response){
+    async getOrders(req: AuthenticatedUserRequest, res: Response){
         try {
-            const result = await this.sellerServiceObject.getorders(req)
+            const result = await this.sellerServiceObject.getorders(req.userId)
             res.status(HttpStatus.OK).json(result)
         } catch (error) {
             res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({

@@ -1,3 +1,5 @@
+import { Permissions } from "./authorization"
+
 export interface CreateUserRequest{
     username: string,
     password: string,
@@ -5,6 +7,7 @@ export interface CreateUserRequest{
 }
 
 export interface User{
+    getUserResult: any
     userId: string,
     username: string,
     password: string,
@@ -12,14 +15,15 @@ export interface User{
 }
 
 export enum UserType {
-    Buyer = 'buyer',
-    Seller = 'seller'
+    Buyer = 'BUYER',
+    Seller = 'SELLER'
   }
 
   export interface UserTokenPayload{
     userId: string,
     username: string,
-    userType: UserType
+    userType: UserType,
+    permissions: string[]
   }
 
 export interface UserCreatedResponse{
