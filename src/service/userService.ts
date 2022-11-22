@@ -1,10 +1,9 @@
+import CommonHttpException from "../exceptions/CommonHttpException";
 import { buyerPermission, sellerPermission } from "../models/authorization";
 import { CreateUserRequest, UserLoginRequest, UserTokenPayload, UserType } from "../models/user.dto";
 import { userRepository } from "../repository/userRepository";
 import { jsonWebToken } from "../security/jsonWebToken";
 import { verifyPassword } from "../security/utils";
-import { errorNames } from "../utils/erroNames";
-import { throwError } from "../utils/utils";
 
 export class userService{
     constructor(){}
@@ -23,10 +22,12 @@ export class userService{
                     permissions: ( user.type == UserType.Buyer) ? buyerPermission.permissions : sellerPermission.permissions 
                 } 
                 return this.jsonWebTokenObject.generateToken(payload)
+            }else{
+               throw new CommonHttpException(500, `Could not create user for username: ${user.username}`) 
             }
         }
         else{
-            throwError(errorNames.AlreadyExists)
+            throw new CommonHttpException(403, `User with username: ${user.username} already exists`)
         }
     }    
 
@@ -44,10 +45,10 @@ export class userService{
                 return this.jsonWebTokenObject.generateToken(payload)
             }
             else{
-                throwError(errorNames.Unauthorized)
+                throw new CommonHttpException(401, `Wrong credentials`)
             }
         }else{
-            throwError(errorNames.NotFound)
+            throw new CommonHttpException(401, `User with ${user.username} not found`)
         }
      }
 }

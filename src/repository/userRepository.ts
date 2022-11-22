@@ -1,12 +1,14 @@
 import { getConnectedClient } from "../datasource/dbConnect";
+import CommonHttpException from "../exceptions/CommonHttpException";
 import { CreateUserRequest, User, UserLoginRequest } from "../models/user.dto";
+import { logError } from "../utils/utils";
 
 export class userRepository{
     constructor(){}
     dbClient = getConnectedClient()
     
-    async createUser(buyer: CreateUserRequest): Promise<string>{
-        let id: string = ''
+    async createUser(buyer: CreateUserRequest): Promise<string | undefined>{
+        let id: string | undefined = undefined
         try {
             const result = await (await this.dbClient).query(
                 `insert into users(username, password, user_type) values($1, $2, $3) returning id;`,
@@ -15,9 +17,9 @@ export class userRepository{
             if (result.rowCount == 1){
                 id = result.rows[0]?.id
             }            
-        } catch (error) {
-            console.log(error); 
-            throw error
+        }catch (error: any) {
+            logError(error.message); 
+            throw new CommonHttpException(500, 'Internal Server Error');
         }
         return id
     }
@@ -35,9 +37,9 @@ export class userRepository{
                 return token
             }
         }
-        catch(error){
-            console.log(error)
-            throw error
+        catch (error: any) {
+            logError(error.message); 
+            throw new CommonHttpException(500, 'Internal Server Error');
         }
     }
 
@@ -57,11 +59,10 @@ export class userRepository{
                 } as User
             }
         }
-        catch(error){
-            console.log(error)
-            throw error
+        catch (error: any) {
+            logError(error.message); 
+            throw new CommonHttpException(500, 'Internal Server Error');
         }
         return user
     }
-
 }

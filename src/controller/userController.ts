@@ -1,16 +1,15 @@
-import e, { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { CreateUserRequest, UserCreatedResponse, UserLoggedInResponse, UserLoginRequest } from "../models/user.dto";
 import { userService } from "../service/userService";
 import HttpStatus from "http-status-codes";
-import { errorNames } from "../utils/erroNames";
-import { throwError } from "../utils/utils";
 import { hashedPassword } from "../security/utils";
+import CommonHttpException from "../exceptions/CommonHttpException";
 
 export class userController{
     constructor(){}
     userServiceObject = new userService() 
 
-    async createUser(req: Request, res: Response){
+    async createUser(req: Request, res: Response, next: NextFunction){
         const createUserRequest: CreateUserRequest = {
             username: req.body.username,
             password: await hashedPassword(req.body.password),
@@ -23,20 +22,11 @@ export class userController{
             }
             res.status(HttpStatus.CREATED).json(response)      
         } catch (error: any) {
-            if(error.name == errorNames.AlreadyExists){
-                res.status(HttpStatus.BAD_REQUEST).json({
-                    error: 'User already exist'
-                })
-            }
-            else{
-                res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-                    error: 'Something bad has happened.'
-                })    
-            }
+            next(error)
         }
     }
     
-    async loginUser(req: Request, res: Response){ 
+    async loginUser(req: Request, res: Response, next: NextFunction){ 
         try {
             const userloginRequest = this.getUsernameAndPassword(req) as UserLoginRequest
             const result = (await this.userServiceObject.loginUser(userloginRequest))
@@ -45,23 +35,7 @@ export class userController{
             }
             res.status(HttpStatus.OK).json(response)      
         } catch (error: any) {
-            if (error.name == errorNames.Unauthorized)
-            res.status(HttpStatus.UNAUTHORIZED).json({
-                error: 'Wrong credentials'
-            })
-            else if (error.name == errorNames.InvalidRequest)
-            res.status(HttpStatus.BAD_REQUEST).json({
-                error: 'Authorization header not found'
-            })
-            else if (error.name == errorNames.NotFound)
-            res.status(HttpStatus.NOT_FOUND).json({
-                error: 'User does not exist'
-            })
-            else{
-                res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-                    error: 'Something bad has happened.'
-                })  
-            }
+            next(error)
         }
     }
 
@@ -73,7 +47,7 @@ export class userController{
             return {username, password} as UserLoginRequest
           }
           else{
-            throwError(errorNames.InvalidRequest)
+            throw new CommonHttpException(400, `Authorization header not found`)
           }
     }
 }

@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import morgan from 'morgan';
+import errorMiddleware from './middleware/exception.middleware';
 import { buyerRouter } from './routes/buyerRoutes';
 import { sellerRouter } from './routes/sellerRoutes';
 import { userRouter } from './routes/userRoutes';
@@ -22,6 +23,7 @@ app.get('/health', (req: Request, res: Response) => {
   res.json({message: 'Server is up and running..'})
 })
 
+app.use(errorMiddleware);
 
 app.listen(port, () => {
   console.log(`🚀 server started at http://localhost:${port}`)

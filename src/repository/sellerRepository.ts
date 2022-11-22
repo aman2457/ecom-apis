@@ -1,5 +1,7 @@
 import { getConnectedClient } from "../datasource/dbConnect";
+import CommonHttpException from "../exceptions/CommonHttpException";
 import { Product, ProductRequest } from "../models/catalog.dto";
+import { logError } from "../utils/utils";
 
 export class sellerRepository{
 
@@ -12,9 +14,9 @@ export class sellerRepository{
                 `select id from users where user_type='SELLER';`
             )
             return (await result).rows
-        } catch (error) {
-         console.log(error)
-         throw error   
+        } catch (error: any) {
+            logError(error.message); 
+            throw new CommonHttpException(500, 'Internal Server Error');
         }
     }
 
@@ -36,9 +38,9 @@ export class sellerRepository{
                     products.push(product)
                 })
             }
-        } catch (error) {
-         console.log(error)
-         throw error   
+        }catch (error: any) {
+            logError(error.message); 
+            throw new CommonHttpException(500, 'Internal Server Error');
         }
         return products
     }
