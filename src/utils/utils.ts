@@ -1,3 +1,3 @@
-export function logError(message: string){
-    console.log(`===========Errror: ${message}===========`)
+export function logError(message: string) {
+  console.log(`===========Errror: ${message}===========`);
 }

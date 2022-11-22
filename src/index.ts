@@ -1,30 +1,32 @@
-import express, { Request, Response } from 'express';
-import morgan from 'morgan';
-import errorMiddleware from './middleware/exception.middleware';
-import { buyerRouter } from './routes/buyerRoutes';
-import { sellerRouter } from './routes/sellerRoutes';
-import { userRouter } from './routes/userRoutes';
+import express, { Request, Response } from "express";
+import morgan from "morgan";
+import errorMiddleware from "./middleware/exception.middleware";
+import { buyerRouter } from "./routes/buyerRoutes";
+import { sellerRouter } from "./routes/sellerRoutes";
+import { userRouter } from "./routes/userRoutes";
 
-const app = express()
+const app = express();
 
 app.use(express.json());
 
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
+app.use(
+  morgan(":method :url :status :res[content-length] - :response-time ms")
+);
 
-const port = 3000
+const port = 3000;
 
-app.use('/api/auth', userRouter)
+app.use("/api/auth", userRouter);
 
-app.use('/api/seller', sellerRouter)
+app.use("/api/seller", sellerRouter);
 
-app.use('/api/buyer', buyerRouter)
+app.use("/api/buyer", buyerRouter);
 
-app.get('/health', (req: Request, res: Response) => {
-  res.json({message: 'Server is up and running..'})
-})
+app.get("/health", (req: Request, res: Response) => {
+  res.json({ message: "Server is up and running.." });
+});
 
 app.use(errorMiddleware);
 
 app.listen(port, () => {
-  console.log(`🚀 server started at http://localhost:${port}`)
-})
+  console.log(`🚀 server started at http://localhost:${port}`);
+});
