@@ -18,7 +18,7 @@ export class userService{
                 const payload: UserTokenPayload = {
                     userId: id,
                     username: user.username,
-                    type: user.type
+                    userType: user.type
                 } 
                 return this.jsonWebTokenObject.generateToken(payload)
             }
@@ -37,7 +37,7 @@ export class userService{
                 const payload: UserTokenPayload = {
                     userId: getUserResult.userId,
                     username: getUserResult.username,
-                    type: getUserResult.type
+                    userType: getUserResult.type
                 } 
                 return this.jsonWebTokenObject.generateToken(payload)
             }

@@ -19,7 +19,7 @@ export enum UserType {
   export interface UserTokenPayload{
     userId: string,
     username: string,
-    type: UserType
+    userType: UserType
   }
 
 export interface UserCreatedResponse{

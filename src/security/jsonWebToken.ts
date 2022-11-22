@@ -9,4 +9,8 @@ export class jsonWebToken{
     generateToken(userTokenPayload: UserTokenPayload){
         return jsonwebtoken.sign(userTokenPayload, SECRET_KEY)
     }
+
+    verifyToken(token: string) {
+        return jsonwebtoken.verify(token, SECRET_KEY)
+    }
 }
