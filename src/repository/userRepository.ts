@@ -1,5 +1,5 @@
 import { getConnectedClient } from "../db/DbConnect";
-import CommonHttpException from "../exceptions/CommonHttpException";
+import DatabaseException from "../exceptions/DatabaseException";
 import { CreateUserRequest, User, UserLoginRequest } from "../models/User.dto";
 import { logError } from "../utils/Utils";
 
@@ -21,7 +21,7 @@ export class UserRepository {
       }
     } catch (error: any) {
       logError(error.message);
-      throw new CommonHttpException(500, "Internal Server Error");
+      throw new DatabaseException(500, "Internal Server Error");
     }
     return id;
   }
@@ -42,7 +42,7 @@ export class UserRepository {
       }
     } catch (error: any) {
       logError(error.message);
-      throw new CommonHttpException(500, "Internal Server Error");
+      throw new DatabaseException(500, "Internal Server Error");
     }
   }
 
@@ -62,7 +62,7 @@ export class UserRepository {
       }
     } catch (error: any) {
       logError(error.message);
-      throw new CommonHttpException(500, "Internal Server Error");
+      throw new DatabaseException(500, "Internal Server Error");
     }
     return user;
   }

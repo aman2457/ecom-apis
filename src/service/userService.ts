@@ -1,6 +1,9 @@
 import { JsonWebToken } from "../auth/JsonWebToken";
 import { verifyPassword } from "../auth/Utils";
-import CommonHttpException from "../exceptions/CommonHttpException";
+import ForbiddenException from "../exceptions/ForbiddenException";
+import HttpException from "../exceptions/HttpException";
+import InternalServerErrorException from "../exceptions/InternalServerErrorException";
+import UnauthorizedException from "../exceptions/UnauthorizedException";
 import { BuyerPermissions, SellerPermissions } from "../models/Authorization.dto";
 import {
   CreateUserRequest,
@@ -34,13 +37,13 @@ export class UserService {
         };
         return this.jsonWebToken.generateToken(payload);
       } else {
-        throw new CommonHttpException(
+        throw new InternalServerErrorException(
           500,
           `Could not create user for username: ${user.username}`
         );
       }
     } else {
-      throw new CommonHttpException(
+      throw new ForbiddenException(
         403,
         `User with username: ${user.username} already exists`
       );
@@ -67,10 +70,10 @@ export class UserService {
             : Object.values(SellerPermissions),        };
         return this.jsonWebToken.generateToken(payload);
       } else {
-        throw new CommonHttpException(401, `Wrong credentials`);
+        throw new UnauthorizedException(401, `Wrong credentials`);
       }
     } else {
-      throw new CommonHttpException(
+      throw new UnauthorizedException(
         401,
         `User with ${user.username} not found`
       );

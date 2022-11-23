@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthenticatedUserRequest } from "../models/Authorization.dto";
 import { JwtPayload } from "jsonwebtoken";
-import CommonHttpException from "../exceptions/CommonHttpException";
 import { logError } from "../utils/Utils";
 import { JsonWebToken } from "../auth/JsonWebToken";
+import UnauthorizedException from "../exceptions/UnauthorizedException";
+import ForbiddenException from "../exceptions/ForbiddenException";
 
 const jsonWebToken = new JsonWebToken();
 
@@ -16,7 +17,7 @@ export function authorize(accessType: string) {
         let user = jsonWebToken.verifyToken(token) as JwtPayload;
 
         if (!user.permissions.some((item: string) => item === accessType)) {
-          throw new CommonHttpException(
+          throw new ForbiddenException(
             403,
             `You can not access this endpoint: ${req.url}`
           );
@@ -25,7 +26,7 @@ export function authorize(accessType: string) {
         (req as AuthenticatedUserRequest).username = user.username;
         (req as AuthenticatedUserRequest).userType = user.userType;
       } else {
-        throw new CommonHttpException(401, `Unauthorized user`);
+        throw new UnauthorizedException(401, `Unauthorized user`);
       }
       next();
     } catch (error: any) {

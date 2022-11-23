@@ -2,7 +2,8 @@ import { CreateOrderRequest } from "../models/Orders.dto";
 import { SellerRepository } from "../repository/SellerRepository";
 import { OrderRepository } from "../repository/OrderRepository";
 import { ProductRepository } from "../repository/ProductRepository";
-import CommonHttpException from "../exceptions/CommonHttpException";
+import NotFoundException from "../exceptions/NotFoundException";
+import InternalServerErrorException from "../exceptions/InternalServerErrorException";
 
 export class BuyerService {
   constructor() {}
@@ -29,7 +30,7 @@ export class BuyerService {
       createOrderRequest.productIds
     );
     if (getProductsResult.length != createOrderRequest.productIds.length) {
-      throw new CommonHttpException(
+      throw new NotFoundException(
         404,
         `Product id's ${createOrderRequest.productIds} for the given seller id: ${sellerId} not found`
       );
@@ -47,7 +48,7 @@ export class BuyerService {
     );
 
     if (!result) {
-      throw new CommonHttpException(500, "Internal Server Error");
+      throw new InternalServerErrorException(500, "Internal Server Error");
     }
 
     return result;

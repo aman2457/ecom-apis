@@ -1,14 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 import {
   CreateUserRequest,
-  UserCreatedResponse,
   UserLoggedInResponse,
   UserLoginRequest,
 } from "../models/User.dto";
 import { UserService } from "../service/UserService";
 import HttpStatus from "http-status-codes";
-import CommonHttpException from "../exceptions/CommonHttpException";
 import { hashedPassword } from "../auth/Utils";
+import BadRequestException from "../exceptions/BadRequestException";
 
 export class UserController {
   constructor() {}
@@ -55,7 +54,7 @@ export class UserController {
       const [username, password] = credentials.split(":");
       return { username, password } as UserLoginRequest;
     } else {
-      throw new CommonHttpException(400, `Authorization header not found`);
+      throw new BadRequestException(400, `Authorization header not found`);
     }
   }
 }

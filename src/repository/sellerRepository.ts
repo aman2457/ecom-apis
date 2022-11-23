@@ -1,6 +1,6 @@
 import { getConnectedClient } from "../db/DbConnect";
-import CommonHttpException from "../exceptions/CommonHttpException";
-import { Product, ProductRequest } from "../models/Catalog.dto";
+import DatabaseException from "../exceptions/DatabaseException";
+import { Product } from "../models/Catalog.dto";
 import { logError } from "../utils/Utils";
 
 export class SellerRepository {
@@ -15,7 +15,7 @@ export class SellerRepository {
       return (await result).rows;
     } catch (error: any) {
       logError(error.message);
-      throw new CommonHttpException(500, "Internal Server Error");
+      throw new DatabaseException(500, "Internal Server Error");
     }
   }
 
@@ -38,7 +38,7 @@ export class SellerRepository {
       }
     } catch (error: any) {
       logError(error.message);
-      throw new CommonHttpException(500, "Internal Server Error");
+      throw new DatabaseException(500, "Internal Server Error");
     }
     return products;
   }

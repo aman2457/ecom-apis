@@ -1,5 +1,5 @@
 import { getConnectedClient } from "../db/DbConnect";
-import CommonHttpException from "../exceptions/CommonHttpException";
+import DatabaseException from "../exceptions/DatabaseException";
 import {
   Product,
   ProductRequest,
@@ -25,7 +25,7 @@ export class ProductRepository {
       }
     } catch (error: any) {
       logError(error.message);
-      throw new CommonHttpException(500, "Internal Server Error");
+      throw new DatabaseException(500, "Internal Server Error");
     }
     return id;
   }
@@ -55,7 +55,7 @@ export class ProductRepository {
       }
     } catch (error: any) {
       logError(error.message);
-      throw new CommonHttpException(500, "Internal Server Error");
+      throw new DatabaseException(500, "Internal Server Error");
     }
     return products;
   }
