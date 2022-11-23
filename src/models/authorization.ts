@@ -7,18 +7,13 @@ export interface AuthenticatedUserRequest extends Request {
   userType: UserType;
 }
 
-export interface Permissions {
-  permissions: string[];
+export enum BuyerPermissions {
+  READ_SELLERS = 'readSellers',
+  READ_CATALOG = 'readCatalog',
+  WRITE_ORDER = 'writeOrder'
 }
 
-export interface BuyerPermission extends Permissions {}
-
-export interface SellerPermission extends Permissions {}
-
-export const buyerPermission: BuyerPermission = {
-  permissions: ["readSellers", "readCatalog", "writeOrder"],
-};
-
-export const sellerPermission: SellerPermission = {
-  permissions: ["readOrders", "writeCatalog"],
-};
+export enum SellerPermissions {
+  READ_ORDERS = 'readOrders',
+  WRITE_CATALOG = 'writeCatalog'
+}

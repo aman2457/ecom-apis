@@ -1,5 +1,5 @@
 import CommonHttpException from "../exceptions/CommonHttpException";
-import { buyerPermission, sellerPermission } from "../models/authorization";
+import { BuyerPermissions, SellerPermissions } from "../models/authorization";
 import {
   CreateUserRequest,
   UserLoginRequest,
@@ -28,8 +28,8 @@ export class userService {
           userType: user.type,
           permissions:
             user.type == UserType.Buyer
-              ? buyerPermission.permissions
-              : sellerPermission.permissions,
+              ? Object.values(BuyerPermissions)
+              : Object.values(SellerPermissions),
         };
         return this.jsonWebTokenObject.generateToken(payload);
       } else {
@@ -62,9 +62,8 @@ export class userService {
           userType: getUserResult.type,
           permissions:
             getUserResult.type == UserType.Buyer
-              ? buyerPermission.permissions
-              : sellerPermission.permissions,
-        };
+            ? Object.values(BuyerPermissions)
+            : Object.values(SellerPermissions),        };
         return this.jsonWebTokenObject.generateToken(payload);
       } else {
         throw new CommonHttpException(401, `Wrong credentials`);

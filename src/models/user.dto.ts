@@ -1,5 +1,3 @@
-import { Permissions } from "./authorization";
-
 export interface CreateUserRequest {
   username: string;
   password: string;

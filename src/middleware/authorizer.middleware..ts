@@ -13,14 +13,14 @@ export function authorize(accessType: string) {
       const authHeader = req.headers.authorization;
       if (authHeader) {
         const token = authHeader.split(" ")[1];
-        let user = jsonWebTokenObject.verifyToken(token) as JwtPayload; //token signature verifications
+        let user = jsonWebTokenObject.verifyToken(token) as JwtPayload;
 
         if (!user.permissions.some((item: string) => item === accessType)) {
           throw new CommonHttpException(
             403,
             `You can not access this endpoint: ${req.url}`
           );
-        } //authorization
+        }
         (req as AuthenticatedUserRequest).userId = user.userId;
         (req as AuthenticatedUserRequest).username = user.username;
         (req as AuthenticatedUserRequest).userType = user.userType;
