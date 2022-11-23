@@ -1,21 +1,21 @@
-import { CreateOrderRequest } from "../models/orders.dto";
-import { sellerRepository } from "../repository/sellerRepository";
-import { orderRepository } from "../repository/orderRepository";
-import { productRepository } from "../repository/productRepository";
+import { CreateOrderRequest } from "../models/Orders.dto";
+import { SellerRepository } from "../repository/SellerRepository";
+import { OrderRepository } from "../repository/OrderRepository";
+import { ProductRepository } from "../repository/ProductRepository";
 import CommonHttpException from "../exceptions/CommonHttpException";
 
-export class buyerService {
+export class BuyerService {
   constructor() {}
 
-  sellerRepositoryObject = new sellerRepository();
-  orderRepositoryObject = new orderRepository();
-  productRepositoryObject = new productRepository();
+  sellerRepository = new SellerRepository();
+  orderRepository = new OrderRepository();
+  productRepository = new ProductRepository();
   async getSellers() {
-    return await this.sellerRepositoryObject.getSellers();
+    return await this.sellerRepository.getSellers();
   }
 
   async getProductsBySellerId(sellerId: string) {
-    return await this.sellerRepositoryObject.getProductBySellerId(sellerId);
+    return await this.sellerRepository.getProductBySellerId(sellerId);
   }
 
   async createOrder(
@@ -24,7 +24,7 @@ export class buyerService {
     buyerId: string
   ) {
     let totalAmount = 0;
-    const getProductsResult = await this.productRepositoryObject.getProducts(
+    const getProductsResult = await this.productRepository.getProducts(
       sellerId,
       createOrderRequest.productIds
     );
@@ -39,7 +39,7 @@ export class buyerService {
       return (totalAmount = item.price + +totalAmount);
     });
 
-    const result = await this.orderRepositoryObject.createOrder(
+    const result = await this.orderRepository.createOrder(
       createOrderRequest.productIds,
       sellerId,
       buyerId,

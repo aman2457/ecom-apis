@@ -1,9 +1,9 @@
 import express, { Request, Response } from "express";
 import morgan from "morgan";
-import errorMiddleware from "./middleware/exception.middleware";
-import { buyerRouter } from "./routes/buyerRoutes";
-import { sellerRouter } from "./routes/sellerRoutes";
-import { userRouter } from "./routes/userRoutes";
+import errorMiddleware from "./middleware/Exception.middleware";
+import { BuyerRouter } from "./routes/BuyerRoutes";
+import { SellerRouter } from "./routes/SellerRoutes";
+import { UserRouter } from "./routes/UserRoutes";
 
 const app = express();
 
@@ -15,11 +15,11 @@ app.use(
 
 const port = process.env.PORT || 3000;
 
-app.use("/api/auth", userRouter);
+app.use("/api/auth", UserRouter);
 
-app.use("/api/seller", sellerRouter);
+app.use("/api/seller", SellerRouter);
 
-app.use("/api/buyer", buyerRouter);
+app.use("/api/buyer", BuyerRouter);
 
 app.get("/health", (req: Request, res: Response) => {
   res.json({ message: "Server is up and running.." });

@@ -4,15 +4,15 @@ import {
   UserCreatedResponse,
   UserLoggedInResponse,
   UserLoginRequest,
-} from "../models/user.dto";
-import { userService } from "../service/userService";
+} from "../models/User.dto";
+import { UserService } from "../service/UserService";
 import HttpStatus from "http-status-codes";
-import { hashedPassword } from "../security/utils";
 import CommonHttpException from "../exceptions/CommonHttpException";
+import { hashedPassword } from "../auth/Utils";
 
-export class userController {
+export class UserController {
   constructor() {}
-  userServiceObject = new userService();
+  userService = new UserService();
 
   async createUser(req: Request, res: Response, next: NextFunction) {
     const createUserRequest: CreateUserRequest = {
@@ -21,7 +21,7 @@ export class userController {
       type: req.body.type,
     };
     try {
-      const result = await this.userServiceObject.createUser(createUserRequest);
+      const result = await this.userService.createUser(createUserRequest);
       const response: UserLoggedInResponse = {
         token: result || "",
       };
@@ -36,7 +36,7 @@ export class userController {
       const userloginRequest = this.getUsernameAndPassword(
         req
       ) as UserLoginRequest;
-      const result = await this.userServiceObject.loginUser(userloginRequest);
+      const result = await this.userService.loginUser(userloginRequest);
       const response: UserLoggedInResponse = {
         token: result ?? "",
       };

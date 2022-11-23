@@ -1,13 +1,13 @@
-import { buyerService } from "../service/buyerService";
+import { BuyerService } from "../service/BuyerService";
 import HttpStatus from "http-status-codes";
 import { NextFunction, Response } from "express";
-import { CreateOrderRequest } from "../models/orders.dto";
-import { AuthenticatedUserRequest } from "../models/authorization";
+import { CreateOrderRequest } from "../models/Orders.dto";
+import { AuthenticatedUserRequest } from "../models/Authorization.dto";
 
-export class buyerController {
+export class BuyerController {
   constructor() {}
 
-  buyerServiceObject = new buyerService();
+  buyerService = new BuyerService();
 
   async getSeller(
     req: AuthenticatedUserRequest,
@@ -15,7 +15,7 @@ export class buyerController {
     next: NextFunction
   ) {
     try {
-      const result = await this.buyerServiceObject.getSellers();
+      const result = await this.buyerService.getSellers();
       res.status(HttpStatus.OK).json(result);
     } catch (error: any) {
       next(error);
@@ -28,7 +28,7 @@ export class buyerController {
     next: NextFunction
   ) {
     try {
-      const result = await this.buyerServiceObject.getProductsBySellerId(
+      const result = await this.buyerService.getProductsBySellerId(
         req.params.seller_id
       );
       res.status(HttpStatus.OK).json(result);
@@ -43,7 +43,7 @@ export class buyerController {
     next: NextFunction
   ) {
     try {
-      const result = await this.buyerServiceObject.createOrder(
+      const result = await this.buyerService.createOrder(
         req.body as CreateOrderRequest,
         req.params.seller_id,
         req.userId

@@ -1,18 +1,18 @@
 import express, { NextFunction, Request, Response } from "express";
-import { sellerController } from "../controller/sellerController";
-import { authorize } from "../middleware/authorizer.middleware.";
-import { AuthenticatedUserRequest, SellerPermissions } from "../models/authorization";
+import { SellerController } from "../controller/SellerController";
+import { authorize } from "../middleware/Authorizer.middleware.";
+import { AuthenticatedUserRequest, SellerPermissions } from "../models/Authorization.dto";
 
-export const sellerRouter = express.Router();
+export const SellerRouter = express.Router();
 
-const sellerControllerObject = new sellerController();
+const sellerController = new SellerController();
 
-sellerRouter.post(
+SellerRouter.post(
   "/create-catalog",
   authorize(SellerPermissions.WRITE_CATALOG),
   async (req: Request, res: Response, next: NextFunction) => {
     console.log(req.body);
-    return sellerControllerObject.createCatalog(
+    return sellerController.createCatalog(
       req as AuthenticatedUserRequest,
       res,
       next
@@ -20,11 +20,11 @@ sellerRouter.post(
   }
 );
 
-sellerRouter.get(
+SellerRouter.get(
   "/order",
   authorize(SellerPermissions.READ_ORDERS),
   async (req: Request, res: Response, next: NextFunction) => {
-    return sellerControllerObject.getOrders(
+    return sellerController.getOrders(
       req as AuthenticatedUserRequest,
       res,
       next

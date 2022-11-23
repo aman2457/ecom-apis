@@ -1,11 +1,11 @@
-import { jsonWebToken } from "../security/jsonWebToken";
 import { Request, Response, NextFunction } from "express";
-import { AuthenticatedUserRequest } from "../models/authorization";
+import { AuthenticatedUserRequest } from "../models/Authorization.dto";
 import { JwtPayload } from "jsonwebtoken";
 import CommonHttpException from "../exceptions/CommonHttpException";
-import { logError } from "../utils/utils";
+import { logError } from "../utils/Utils";
+import { JsonWebToken } from "../auth/JsonWebToken";
 
-const jsonWebTokenObject = new jsonWebToken();
+const jsonWebToken = new JsonWebToken();
 
 export function authorize(accessType: string) {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -13,7 +13,7 @@ export function authorize(accessType: string) {
       const authHeader = req.headers.authorization;
       if (authHeader) {
         const token = authHeader.split(" ")[1];
-        let user = jsonWebTokenObject.verifyToken(token) as JwtPayload;
+        let user = jsonWebToken.verifyToken(token) as JwtPayload;
 
         if (!user.permissions.some((item: string) => item === accessType)) {
           throw new CommonHttpException(

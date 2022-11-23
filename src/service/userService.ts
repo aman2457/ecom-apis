@@ -1,26 +1,27 @@
+import { JsonWebToken } from "../auth/JsonWebToken";
+import { verifyPassword } from "../auth/Utils";
 import CommonHttpException from "../exceptions/CommonHttpException";
-import { BuyerPermissions, SellerPermissions } from "../models/authorization";
+import { BuyerPermissions, SellerPermissions } from "../models/Authorization.dto";
 import {
   CreateUserRequest,
   UserLoginRequest,
   UserTokenPayload,
   UserType,
-} from "../models/user.dto";
-import { userRepository } from "../repository/userRepository";
-import { jsonWebToken } from "../security/jsonWebToken";
-import { verifyPassword } from "../security/utils";
+} from "../models/User.dto";
+import { UserRepository } from "../repository/UserRepository";
 
-export class userService {
+
+export class UserService {
   constructor() {}
 
-  userRepositoryObject = new userRepository();
-  jsonWebTokenObject = new jsonWebToken();
+  userRepository = new UserRepository();
+  jsonWebToken = new JsonWebToken();
   async createUser(user: CreateUserRequest) {
-    const checkExistingUser = await this.userRepositoryObject.getUser(
+    const checkExistingUser = await this.userRepository.getUser(
       user.username
     );
     if (!checkExistingUser) {
-      const id = await this.userRepositoryObject.createUser(user);
+      const id = await this.userRepository.createUser(user);
       if (id) {
         const payload: UserTokenPayload = {
           userId: id,
@@ -31,7 +32,7 @@ export class userService {
               ? Object.values(BuyerPermissions)
               : Object.values(SellerPermissions),
         };
-        return this.jsonWebTokenObject.generateToken(payload);
+        return this.jsonWebToken.generateToken(payload);
       } else {
         throw new CommonHttpException(
           500,
@@ -47,7 +48,7 @@ export class userService {
   }
 
   async loginUser(user: UserLoginRequest) {
-    const getUserResult = await this.userRepositoryObject.getUser(
+    const getUserResult = await this.userRepository.getUser(
       user.username
     );
     if (getUserResult) {
@@ -64,7 +65,7 @@ export class userService {
             getUserResult.type == UserType.Buyer
             ? Object.values(BuyerPermissions)
             : Object.values(SellerPermissions),        };
-        return this.jsonWebTokenObject.generateToken(payload);
+        return this.jsonWebToken.generateToken(payload);
       } else {
         throw new CommonHttpException(401, `Wrong credentials`);
       }

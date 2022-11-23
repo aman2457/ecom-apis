@@ -2,27 +2,25 @@ import { Request } from "express";
 import {
   CreateCatalogRequest,
   ProductRequest,
-  ProductResponse,
-} from "../models/catalog.dto";
-import { Order } from "../models/orders.dto";
-import { orderRepository } from "../repository/orderRepository";
-import { productRepository } from "../repository/productRepository";
+} from "../models/Catalog.dto";
+import { Order } from "../models/Orders.dto";
+import { OrderRepository } from "../repository/OrderRepository";
+import { ProductRepository } from "../repository/ProductRepository";
 
-export class sellerService {
-  orderRepository: any;
+export class SellerService {
   constructor() {}
 
-  productRpositoryObject = new productRepository();
-  orderRepositoryObject = new orderRepository();
+  productRpository = new ProductRepository();
+  orderRepository = new OrderRepository();
 
   async createCatalog(catalogRequest: CreateCatalogRequest, sellerId: string) {
     const result = catalogRequest.catalog.map(async (item) => {
-      await this.productRpositoryObject.addProduct(item, sellerId);
+      await this.productRpository.addProduct(item, sellerId);
     });
     return "Product added successfully..";
   }
 
   async getorders(sellerId: string): Promise<Array<Order<ProductRequest>>> {
-    return await this.orderRepositoryObject.getOrderBySellerId(sellerId);
+    return await this.orderRepository.getOrderBySellerId(sellerId);
   }
 }

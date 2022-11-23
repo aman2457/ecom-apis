@@ -1,11 +1,11 @@
 import jsonwebtoken from "jsonwebtoken";
-import { UserTokenPayload } from "../models/user.dto";
+import { UserTokenPayload } from "../models/User.dto";
 import * as dotenv from "dotenv";
 dotenv.config();
 
 const SECRET_KEY = "ECOMAPIS";
 
-export class jsonWebToken {
+export class JsonWebToken {
   constructor() {}
 
   generateToken(userTokenPayload: UserTokenPayload) {

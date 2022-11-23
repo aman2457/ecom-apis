@@ -1,4 +1,4 @@
-import { UserType } from "./user.dto";
+import { UserType } from "./User.dto";
 import { Request } from "express";
 
 export interface AuthenticatedUserRequest extends Request {

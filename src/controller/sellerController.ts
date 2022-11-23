@@ -1,20 +1,22 @@
 import { NextFunction, Response } from "express";
 import HttpStatus from "http-status-codes";
-import { AuthenticatedUserRequest } from "../models/authorization";
-import { CreateCatalogRequest } from "../models/catalog.dto";
-import { DefaultMessage } from "../models/user.dto";
-import { sellerService } from "../service/sellerService";
+import { AuthenticatedUserRequest } from "../models/Authorization.dto";
+import { CreateCatalogRequest } from "../models/Catalog.dto";
+import { DefaultMessage } from "../models/User.dto";
+import { SellerService } from "../service/SellerService";
 
-export class sellerController {
+export class SellerController {
   constructor() {}
-  sellerServiceObject = new sellerService();
+  
+  sellerService = new SellerService();
+
   async createCatalog(
     req: AuthenticatedUserRequest,
     res: Response,
     next: NextFunction
   ) {
     try {
-      const result = await this.sellerServiceObject.createCatalog(
+      const result = await this.sellerService.createCatalog(
         req.body as CreateCatalogRequest,
         req.userId
       );
@@ -33,7 +35,7 @@ export class sellerController {
     next: NextFunction
   ) {
     try {
-      const result = await this.sellerServiceObject.getorders(req.userId);
+      const result = await this.sellerService.getorders(req.userId);
       res.status(HttpStatus.OK).json(result);
     } catch (error) {
       next(error);

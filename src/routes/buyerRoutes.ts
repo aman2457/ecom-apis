@@ -1,17 +1,17 @@
 import express, { NextFunction, Request, Response } from "express";
-import { buyerController } from "../controller/buyerController";
-import { authorize } from "../middleware/authorizer.middleware.";
-import { AuthenticatedUserRequest, BuyerPermissions } from "../models/authorization";
+import { BuyerController } from "../controller/BuyerController";
+import { authorize } from "../middleware/Authorizer.middleware.";
+import { AuthenticatedUserRequest, BuyerPermissions } from "../models/Authorization.dto";
 
-export const buyerRouter = express.Router();
+export const BuyerRouter = express.Router();
 
-const buyerControllerObject = new buyerController();
+const buyerController = new BuyerController();
 
-buyerRouter.get(
+BuyerRouter.get(
   "/list-of-sellers",
   authorize(BuyerPermissions.READ_SELLERS),
   async (req: Request, res: Response, next: NextFunction) => {
-    return buyerControllerObject.getSeller(
+    return buyerController.getSeller(
       req as AuthenticatedUserRequest,
       res,
       next
@@ -19,11 +19,11 @@ buyerRouter.get(
   }
 );
 
-buyerRouter.get(
+BuyerRouter.get(
   "/seller-catalog/:seller_id",
   authorize(BuyerPermissions.READ_CATALOG),
   async (req: Request, res: Response, next: NextFunction) => {
-    return buyerControllerObject.getProductsBySellerId(
+    return buyerController.getProductsBySellerId(
       req as AuthenticatedUserRequest,
       res,
       next
@@ -31,11 +31,11 @@ buyerRouter.get(
   }
 );
 
-buyerRouter.post(
+BuyerRouter.post(
   "/create-order/:seller_id",
   authorize(BuyerPermissions.WRITE_ORDER),
   async (req: Request, res: Response, next: NextFunction) => {
-    return buyerControllerObject.createOrder(
+    return buyerController.createOrder(
       req as AuthenticatedUserRequest,
       res,
       next

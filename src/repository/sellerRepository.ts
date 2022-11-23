@@ -1,9 +1,9 @@
-import { getConnectedClient } from "../db/dbConnect";
+import { getConnectedClient } from "../db/DbConnect";
 import CommonHttpException from "../exceptions/CommonHttpException";
-import { Product, ProductRequest } from "../models/catalog.dto";
-import { logError } from "../utils/utils";
+import { Product, ProductRequest } from "../models/Catalog.dto";
+import { logError } from "../utils/Utils";
 
-export class sellerRepository {
+export class SellerRepository {
   constructor() {}
   dbClient = getConnectedClient();
 

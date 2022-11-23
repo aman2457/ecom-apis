@@ -1,10 +1,10 @@
-import { getConnectedClient } from "../db/dbConnect";
+import { getConnectedClient } from "../db/DbConnect";
 import CommonHttpException from "../exceptions/CommonHttpException";
-import { ProductResponse } from "../models/catalog.dto";
-import { Order } from "../models/orders.dto";
-import { logError } from "../utils/utils";
+import { ProductResponse } from "../models/Catalog.dto";
+import { Order } from "../models/Orders.dto";
+import { logError } from "../utils/Utils";
 
-export class orderRepository {
+export class OrderRepository {
   constructor() {}
   dbClient = getConnectedClient();
 

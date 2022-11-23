@@ -1,4 +1,4 @@
-import { ProductRequest } from "./catalog.dto";
+import { ProductRequest } from "./Catalog.dto";
 
 export interface Order<T> {
   id: string;

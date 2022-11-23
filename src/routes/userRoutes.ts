@@ -1,20 +1,20 @@
 import express, { NextFunction, Request, Response } from "express";
-import { userController } from "../controller/userController";
+import { UserController } from "../controller/UserController";
 
-export const userRouter = express.Router();
+export const UserRouter = express.Router();
 
-const userControllerObject = new userController();
+const userController = new UserController();
 
-userRouter.post(
+UserRouter.post(
   "/register",
   async (req: Request, res: Response, next: NextFunction) => {
-    return userControllerObject.createUser(req, res, next);
+    return userController.createUser(req, res, next);
   }
 );
 
-userRouter.post(
+UserRouter.post(
   "/login",
   async (req: Request, res: Response, next: NextFunction) => {
-    return userControllerObject.loginUser(req, res, next);
+    return userController.loginUser(req, res, next);
   }
 );

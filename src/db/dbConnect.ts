@@ -1,6 +1,6 @@
 import pg from "pg";
 const { Pool } = pg;
-import { dbConfig } from "./dbConfig";
+import { dbConfig } from "./DbConfig";
 
 export async function getConnectedClient() {
   const client = new Pool({
