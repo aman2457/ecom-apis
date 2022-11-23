@@ -26,7 +26,7 @@ For development, you will need Node.js, Postgres and a node global package, Yarn
 - Create `.env` file in root of your repository
 - Check `.env.example` file and set the variables accordingly.
 - `TOKEN_SECRET_KEY` is a sign key to generate jsob web token, copy the `
-63 random alpha-numeric characters (a-z, A-Z, 0-9)` value from this [website]('https://www.grc.com/passwords.htm') and set the `TOKEN_SECRET_KEY` value.
+63 random alpha-numeric characters (a-z, A-Z, 0-9)` value from this [website](https://www.grc.com/passwords.htm) and set the `TOKEN_SECRET_KEY` value.
 
 ## Running the project
 - If all the above steps are completed then we can run this project using
